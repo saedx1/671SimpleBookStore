@@ -105,7 +105,7 @@
                                         </tr>
                                     </table>
                                     <form method='POST'>
-                                        <input type=\"submit\" value=\"Add To Cart\">
+                                        <a href='orders.php?ISBN=$row[3]&username=saad'>Add to Cart</a>
                                     </form>
                                 </div>
                                 </a>
