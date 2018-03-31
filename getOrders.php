@@ -144,13 +144,13 @@ while($row = mysqli_fetch_array($result)) {
     echo "<td>" . $row['Title'] . "</td>";
     echo "<td>" . $row['ISBN'] . "</td>";
     echo "<td>" . $row['Price'] . "</td>"; 
-    echo "<td bgcolor=\"white\"><div id=\"cartQuantity".$row['ISBN']."\" style=\"background-color:lightblue\" contenteditable>" . $row['Quantity'] . "</div><a href=\"#\" onclick='updateOrder(\"".$row['ISBN'] . "\",".$row['OrderID'].",\"updateQuantity\")'>update</a></td>";
-    echo "<td><a href=\"#\" onclick='updateOrder(\"".$row['ISBN'] . "\",".$row['OrderID'].",\"deleteItem\")'>delete<a></td>"; 
+    echo "<td bgcolor=\"white\"><div id=\"cartQuantity".$row['ISBN']."\" style=\"background-color:lightblue\" contenteditable>" . $row['Quantity'] . "</div><a href=\"orders.php\" onclick='updateOrder(\"".$row['ISBN'] . "\",".$row['OrderID'].",\"updateQuantity\")'>update</a></td>";
+    echo "<td><a href=\"orders.php\" onclick='updateOrder(\"".$row['ISBN'] . "\",".$row['OrderID'].",\"deleteItem\")'>delete<a></td>"; 
     echo "</tr>";
 }
 echo "</table>";
 echo "<h2>Order Total: $". $total ."</h2>";
-echo "<h2><a href=\"#\" onclick='updateOrder(\"None\",".$OrderID.",\"checkout\")'>Checkout</a></h2>";
+echo "<h2><a href=\"orders.php\" onclick='updateOrder(\"None\",".$OrderID.",\"checkout\")'>Checkout</a></h2>";
 } else{
 
 $total = 0;

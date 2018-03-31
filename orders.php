@@ -126,7 +126,7 @@ console.log(Method+"in scripts else");
 </form>
 <br>
 <div id="txtHint"><b>Order info will be listed here...</b></div>
-<div id="debug"><b>Debug info will be listed here...</b></div>
+<div id="debug"><b>Important info will be listed here...</b></div>
 
 
 <?php 
@@ -214,7 +214,7 @@ if(isset($_GET['ISBN'])){
 
 
 $ISBN = $_GET['ISBN'];
-$sql="SELECT * FROM orders WHERE UserName = '$user';";
+$sql="SELECT * FROM orders WHERE UserName = '$user' AND State='1';";
 $result = mysqli_query($con,$sql);
 /*debug_to_console( mysqli_error($result) );*/
 
