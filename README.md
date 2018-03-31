@@ -1,6 +1,7 @@
 # dbproject
 
 Notes for development.  The Order State is represented by the following IDs:
+\n
 /*
 state 1 = cart
 state 2 = processing
