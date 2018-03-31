@@ -24,9 +24,73 @@ function showUser(str) {
                 document.getElementById("txtHint").innerHTML = this.responseText;
             }
         };
-        xmlhttp.open("GET","getOrders.php?username="+user+"&state="+str,true);
+        xmlhttp.open("GET","getOrders.php?state="+str,true);
        xmlhttp.send();
     }
+}
+</script>
+
+<script>
+//update cart
+
+function updateOrder(ISBN,OrderID,Method){
+/*
+var http = new XMLHttpRequest();
+var url = "updateOrder.php";
+var Quantity = "NA"
+if(Method=="updateQuantity"){
+	Quantity= document.getElementById("cartQuantity"+ISBN).innerHTML;
+	
+	//remove HTML tags from input	
+	Quantity = Quantity.replace(/<[^>]*(>|$)/,"");
+}
+console.log("ISBN:"+ISBN + " OrderID:"+OrderID+" Method:"+Method);
+var params = "ISBN="+ISBN+"&OrderID="+OrderID+"&Method="+Method+"&Quantity="+Quantity;
+http.open("POST", url, true);
+
+//Send the proper header information along with the request
+http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+http.onreadystatechange = function() {//Call a function when the state changes.
+    if(http.readyState == 4 && http.status == 200) {
+        alert(http.responseText);
+    }
+}
+http.send(params);
+*/
+
+
+
+console.log("ISBN:"+ISBN + " OrderID:"+OrderID+" Method:"+Method);
+     
+        if (window.XMLHttpRequest) {
+            // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            // code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("debug").innerHTML = this.responseText;
+            }
+        };
+	if(Method=="updateQuantity"){
+	var Quantity= document.getElementById("cartQuantity"+ISBN).innerHTML;
+	
+	//remove HTML tags from input	
+	var Quantity = Quantity.replace(/<[^>]*(>|$)/,"");
+console.log(Quantity+" in scripts if");
+
+	xmlhttp.open("GET","updateOrder.php?ISBN="+ISBN+"&OrderID="+OrderID+"&Method="+Method+"&Quantity="+Quantity,true);
+	} else{
+console.log(Method+"in scripts else");
+	xmlhttp.open("GET","updateOrder.php?ISBN="+ISBN+"&OrderID="+OrderID+"&Method="+Method,true);
+	}
+        
+       xmlhttp.send();
+    
+
 }
 </script>
 
@@ -62,6 +126,7 @@ function showUser(str) {
 </form>
 <br>
 <div id="txtHint"><b>Order info will be listed here...</b></div>
+<div id="debug"><b>Debug info will be listed here...</b></div>
 
 
 <?php 
@@ -141,12 +206,14 @@ function debug_to_console( $data ) {
 
 
 $user = $_COOKIE['username'];
-$ISBN = $_GET['ISBN'];
+
 $orderID=null;
 
 //add book to cart if ISBN != null/empty
-if($ISBN!=""){
+if(isset($_GET['ISBN'])){
 
+
+$ISBN = $_GET['ISBN'];
 $sql="SELECT * FROM orders WHERE UserName = '$user';";
 $result = mysqli_query($con,$sql);
 /*debug_to_console( mysqli_error($result) );*/
@@ -165,7 +232,7 @@ debug_to_console( $orderID );
 
 /*get orderID*/
 if($orderID==null){
-	$sql2 = "SELECT OrderID FROM orders WHERE UserName = '$user';";
+	$sql2 = "SELECT OrderID FROM orders WHERE State='1' AND UserName = '$user';";
 	$result = mysqli_query($con,$sql);
 	while($row = mysqli_fetch_array($result)) {
 		$orderID = $row['OrderID'];

@@ -76,7 +76,7 @@
 		    $cart='display:none';  //cart is not enabled/visible
 		    
 		    //check if user is logged in, if so, make cart visible
-		    if($_COOKIE['username']!=null){
+		    if(isset($_COOKIE['username'])){
  		      $cart = ''; 
 		    }
 			

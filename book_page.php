@@ -31,6 +31,15 @@
             }
             if(isset($_GET['isbn']))
             {
+		
+		$cart='display:none';  //cart is not enabled/visible
+		    
+		    //check if user is logged in, if so, make cart visible
+		    if(isset($_COOKIE['username'])){
+ 		      $cart = ''; 
+		    }
+					
+		
                 $isbn = $_GET['isbn'];
                 $query = "SELECT Title, TypeName, Year, Stock, Price,AuthorName FROM `BooksAuthors` WHERE ISBN = '$isbn';";
                 $result = mysqli_query($con, $query);
@@ -52,7 +61,9 @@
                                 <h4>Stock: $row[3]</h4>
                                 <h4>Price: $row[4]$</h4>
                             </div>
-                            <input type=\"submit\" value=\"Add To Cart\" class='bookinput'>
+                            <form method='POST'>
+                               <h2><a href='orders.php?ISBN=$row[3]' style='$cart'>Add to Cart</a></h2>
+                            </form>
                         </center>";
             }
         ?>

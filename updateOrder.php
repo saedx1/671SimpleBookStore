@@ -91,28 +91,21 @@ function debug_to_console( $data ) {
 
     echo "<script>console.log( 'Debug Objects: " . $output . "' );</script>";
 }
+//end error reporting
 
-
-
+//start
 $username = $_COOKIE['username'];
-$state = intval($_GET['state']);
-$orderID =null;
-/*
-state 1 = cart
-state 2 = processing
-state 3 = shipped
-state 4 = past
-*/
+$ISBN = $_GET['ISBN'];
+$OrderID = $_GET['OrderID'];
+$Method = $_GET['Method'];
+debug_to_console($username);
+debug_to_console($ISBN);
+debug_to_console($OrderID);
+debug_to_console($Method);
+//constant for checkout state
+$checkout = 2;
 
-/*get orderID*/
-if($orderID==null){
-	$sql = "SELECT OrderID FROM orders WHERE State='1' AND UserName = '$username';";
-	$result = mysqli_query($con,$sql);
-	while($row = mysqli_fetch_array($result)) {
-		$orderID = $row['OrderID'];
-	}
-}
-
+echo "<script>console.log( 'In updateOrders' );</script>";
 $con=mysqli_connect("dbproject.saadmtsa.club","root","password","dbproject");
                 if (mysqli_connect_errno())
                 {
@@ -121,60 +114,37 @@ $con=mysqli_connect("dbproject.saadmtsa.club","root","password","dbproject");
 
 
 /*mysqli_select_db($con,"ajax_demo");*/
-$sql="SELECT * FROM orders o, orderitems i, books b WHERE o.OrderID=i.OrderID AND i.ISBN=b.ISBN AND o.username = '$username' AND o.STATE = '$state';";
-$result = mysqli_query($con,$sql);
-echo "<script>console.log( 'In getOrders' );</script>";
-//use different logic for cart, other states should be have the same output (for now)
-if($state==1){
-$total = 0;
-$OrderID = null;
-echo "<table>
-<tr>
-<th>OrderID</th>
-<th>Title</th>
-<th>ISBN</th>
-<th>Price</th>
-<th>Quantity</th>
-</tr>";
-while($row = mysqli_fetch_array($result)) {
-    $total = $total + doubleval($row['Price']);
-    $OrderID = $row['OrderID'];
-    echo "<tr>";
-    echo "<td>" . $row['OrderID'] . "</td>";            
-    echo "<td>" . $row['Title'] . "</td>";
-    echo "<td>" . $row['ISBN'] . "</td>";
-    echo "<td>" . $row['Price'] . "</td>"; 
-    echo "<td bgcolor=\"white\"><div id=\"cartQuantity".$row['ISBN']."\" style=\"background-color:lightblue\" contenteditable>" . $row['Quantity'] . "</div><a href=\"#\" onclick='updateOrder(\"".$row['ISBN'] . "\",".$row['OrderID'].",\"updateQuantity\")'>update</a></td>";
-    echo "<td><a href=\"#\" onclick='updateOrder(\"".$row['ISBN'] . "\",".$row['OrderID'].",\"deleteItem\")'>delete<a></td>"; 
-    echo "</tr>";
-}
-echo "</table>";
-echo "<h2>Order Total: $". $total ."</h2>";
-echo "<h2><a href=\"#\" onclick='updateOrder(\"None\",".$OrderID.",\"checkout\")'>Checkout</a></h2>";
-} else{
 
-$total = 0;
-echo "<table>
-<tr>
-<th>OrderID</th>
-<th>UserName</th>
-<th>Title</th>
-<th>Price</th>
-<th>Quantity</th>
-</tr>";
-while($row = mysqli_fetch_array($result)) {
-    $total = $total + doubleval($row['Price']);
-    echo "<tr>";
-    echo "<td>" . $row['OrderID'] . "</td>";
-    echo "<td>" . $row['UserName'] . "</td>";         
-    echo "<td>" . $row['Title'] . "</td>";
-    echo "<td>" . $row['Price'] . "</td>"; 
-    echo "<td>" . $row['Quantity'] . "</td>";
-    echo "</tr>";
-}
-echo "</table>";
 
+if($Method == "deleteItem"){
+
+$sql="delete FROM orderitems WHERE OrderID='$OrderID' AND ISBN='$ISBN';";
+	if ($con->query($sql) === TRUE) {
+		echo "Item deleted successfully";
+		} else { 					
+		 echo "Error: " . $sql . "<br>" . $con->error;
+	}
+} else if($Method == "updateQuantity"){
+$Quantity = $_GET['Quantity'];
+$sql = "UPDATE  orderitems SET Quantity = '$Quantity' where OrderID = '$OrderID' AND ISBN = '$ISBN';";
+	if ($con->query($sql) === TRUE) {
+			echo "Quantity updated successfully";
+			} else { 					
+			 echo "Error: " . $sql . "<br>" . $con->error;
+		}
+
+} else if($Method == "checkout"){
+  $sql = "UPDATE  orders SET State = '$checkout' where OrderID = '$OrderID' AND UserName = '$username';";
+  if ($con->query($sql) === TRUE) {
+			echo "Order is being processed";
+			} else { 					
+			 echo "Error: " . $sql . "<br>" . $con->error;
+		}
 }
+
+//debug
+//echo "<h2>".$ISBN." ".$OrderID." ". $Method . "</h2>";
+
 mysqli_close($con);
 ?>
 </body>

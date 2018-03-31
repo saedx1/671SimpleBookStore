@@ -50,6 +50,9 @@ function getCookie(name) {
   var result = regexp.exec(document.cookie);
   return (result === null) ? null : result[1];
 }
+
+
+
 function redirect(page)
 {
     window.location = page;
