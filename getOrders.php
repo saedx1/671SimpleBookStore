@@ -94,7 +94,7 @@ function debug_to_console( $data ) {
 
 
 
-$username = $_GET['username'];
+$username = $_COOKIE['username'];
 $state = intval($_GET['state']);
 
 debug_to_console( $username."line 99 get" );
@@ -114,29 +114,32 @@ $con=mysqli_connect("dbproject.saadmtsa.club","root","password","dbproject");
                     echo "Failed to connect to MySQL: " . mysqli_connect_error();
                 }
 
+
 /*mysqli_select_db($con,"ajax_demo");*/
 $sql="SELECT * FROM orders o, orderitems i, books b WHERE o.OrderID=i.OrderID AND i.ISBN=b.ISBN AND o.username = '$username' AND o.STATE = '$state';";
 $result = mysqli_query($con,$sql);
 
-
+$total = 0;
 echo "<table>
 <tr>
 <th>OrderID</th>
 <th>UserName</th>
-<th>State</th>
 <th>Title</th>
+<th>Price</th>
 <th>Quantity</th>
 </tr>";
 while($row = mysqli_fetch_array($result)) {
+    $total = $total + doubleval($row['Price']);
     echo "<tr>";
     echo "<td>" . $row['OrderID'] . "</td>";
-    echo "<td>" . $row['UserName'] . "</td>";
-    echo "<td>" . $row['State'] . "</td>";     
-    echo "<td>" . $row['Title'] . "</td>"; 
+    echo "<td>" . $row['UserName'] . "</td>";         
+    echo "<td>" . $row['Title'] . "</td>";
+    echo "<td>" . $row['Price'] . "</td>"; 
     echo "<td>" . $row['Quantity'] . "</td>";
     echo "</tr>";
 }
 echo "</table>";
+echo "<h2>Order Total: $". $total ."</h2>";
 mysqli_close($con);
 ?>
 </body>

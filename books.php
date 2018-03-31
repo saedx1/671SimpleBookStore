@@ -61,7 +61,7 @@
 //                echo $query;
                 $result = mysqli_query($con,$query);            
                 $table = mysqli_fetch_all($result);
-                $myUser = $_COOKIE['username'];    
+                //$myUser = $_COOKIE['username']; old version, delete when stable   
                 foreach($table as $row)
                 {
                     $result = mysqli_query($con, "SELECT AuthorName From BooksAuthors B JOIN Authors ON B.AuthorID = A.AuthorID WHERE ISBN = $row[3];");
@@ -72,6 +72,17 @@
                         $authors = "$authors, $author[0]";
                     }
                     $authors = substr($authors, 2);
+			
+		    $cart='display:none';  //cart is not enabled/visible
+		    
+		    //check if user is logged in, if so, make cart visible
+		    if($_COOKIE['username']!=null){
+ 		      $cart = ''; 
+		    }
+			
+
+
+
                     echo "  <a class='booka' href='book_page.php?isbn=$row[3]'>
                                 <div class=\"book\">
                                     <table>
@@ -105,7 +116,7 @@
                                         </tr>
                                     </table>
                                     <form method='POST'>
-                                        <a href='orders.php?ISBN=$row[3]&username=$myUser'>Add to Cart</a>
+                                        <a href='orders.php?ISBN=$row[3]' style='$cart'>Add to Cart</a>
                                     </form>
                                 </div>
                                 </a>

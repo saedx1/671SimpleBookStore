@@ -32,10 +32,24 @@ function showUser(str) {
 
 
 </head>
-<body>
 <h1>
             Your Cart
 </h1>
+<div class = "menu" style="margin-bottom: 2em;">
+        <center>
+            <a href=".">Home</a>
+            <a href="books.php">Books</a>
+            <a href="search.php">Search</a>
+            <a id="signin" style='display:none' href="sign_in.php">Sign in</a>
+            <a id="register" style='display:none' href="register.php">Register</a>
+            <a id="myaccount" style='display:none' href="myaccount.php">My Account</a>
+            <a id="admin" style='display:none' href="admin.php">Admin</a>
+            <a id="signout" style='display:none' onclick="signout()" href="index.php">Sign Out</a>
+        </center>
+        </div>
+
+<body>
+
 
 <form>
 <select name="users" onchange="showUser(this.value)">
@@ -126,12 +140,17 @@ function debug_to_console( $data ) {
 }
 
 
-$user = $_GET['username'];
+$user = $_COOKIE['username'];
 $ISBN = $_GET['ISBN'];
 $orderID=null;
+
+//add book to cart if ISBN != null/empty
+if($ISBN!=""){
+
 $sql="SELECT * FROM orders WHERE UserName = '$user';";
 $result = mysqli_query($con,$sql);
 /*debug_to_console( mysqli_error($result) );*/
+
 /*check if there is a current cart, if not, add one*/
 if (mysqli_num_rows($result)==0) { 
 	$date = date("Y-m-d H:i:s");
@@ -143,6 +162,7 @@ if ($con->query($sql2) === TRUE) {
 	}	
 } 
 debug_to_console( $orderID );
+
 /*get orderID*/
 if($orderID==null){
 	$sql2 = "SELECT OrderID FROM orders WHERE UserName = '$user';";
@@ -157,13 +177,21 @@ if($orderID!=null){
 	$sql2 = "INSERT INTO orderitems (OrderID, ISBN, Quantity) VALUES ('$orderID', '$ISBN','1' )";
 	if ($con->query($sql2) === TRUE) {
 	    	echo "New item added successfully";
-		} else {
-	   	 echo "Error: " . $sql . "<br>" . $con->error;
+		} else { //Book already in cart: increment Quantity
+			$sql3 = "UPDATE  orderitems SET Quantity = Quantity + 1 where OrderID = '$orderID' AND ISBN = '$ISBN';";
+			if ($con->query($sql3) === TRUE) {
+	    			echo "New item updated successfully";
+				} else { 					
+	   			 echo "Error: " . $sql . "<br>" . $con->error;
+			}
+	   	 
 		}
 }
 debug_to_console( $orderID ."line 156");
 
 mysqli_close($con);
+
+}//close bracket for if($ISBN!="") 
 ?>
 </body>
 </html>

@@ -3,15 +3,16 @@ function showMenu()
     var username = getCookie('username');
     if(username)
     {
-        if(username == 'admin')
+        if(username = 'admin')
         {
             document.getElementById('admin').style.display = '';
             document.getElementById('signout').style.display = '';
+            document.getElementById('myaccount').style.display = '';            
         }
         else
         {
             document.getElementById('myaccount').style.display = '';
-            document.getElementById('signout').style.display = '';
+            document.getElementById('signout').style.display = '';            
         }
     }
     else

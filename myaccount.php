@@ -23,4 +23,5 @@
         </center>
         </div>
     </body>
+<h2><a id="orders" href="orders.php">Orders</a></h2>
 </html>
