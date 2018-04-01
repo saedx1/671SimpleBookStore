@@ -42,7 +42,7 @@ function ShutdownHandler()
 
     return(TRUE);
 };
-
+    
 register_shutdown_function('ShutdownHandler');
 
 // ----------------------------------------------------------------------------------------------------
@@ -96,6 +96,9 @@ function debug_to_console( $data ) {
 
 $username = $_COOKIE['username'];
 $state = intval($_GET['state']);
+    
+$dateFrom = intval($_GET['from']) ;
+$dateTo = intval($_GET['to']);
 $orderID =null;
 /*
 state 1 = cart
@@ -121,23 +124,26 @@ $con=mysqli_connect("dbproject.saadmtsa.club","root","password","dbproject");
 
 
 /*mysqli_select_db($con,"ajax_demo");*/
-$sql="SELECT * FROM orders o, orderitems i, books b WHERE o.OrderID=i.OrderID AND i.ISBN=b.ISBN AND o.username = '$username' AND o.STATE = '$state';";
+$sql="SELECT * FROM orders o, orderitems i, books b WHERE o.OrderID=i.OrderID AND i.ISBN=b.ISBN AND o.username = '$username' AND o.STATE = '$state' AND Year(o.DateTime) >= $dateFrom AND Year(o.DateTime) <= $dateTo;";
 $result = mysqli_query($con,$sql);
 echo "<script>console.log( 'In getOrders' );</script>";
 //use different logic for cart, other states should be have the same output (for now)
 if($state==1){
 $total = 0;
 $OrderID = null;
-echo "<table>
-<tr>
-<th>OrderID</th>
-<th>Title</th>
-<th>ISBN</th>
-<th>Price</th>
-<th>Quantity</th>
-</tr>";
+if(mysqli_num_rows($result) != 0)
+{
+    echo "<table>
+    <tr>
+    <th>OrderID</th>
+    <th>Title</th>
+    <th>ISBN</th>
+    <th>Price</th>
+    <th>Quantity</th>
+    </tr>";
+}
 while($row = mysqli_fetch_array($result)) {
-    $total = $total + doubleval($row['Price']);
+    $total = $total + doubleval($row['Price']) * intval($row['Quantity']);
     $OrderID = $row['OrderID'];
     echo "<tr>";
     echo "<td>" . $row['OrderID'] . "</td>";            
@@ -145,12 +151,15 @@ while($row = mysqli_fetch_array($result)) {
     echo "<td>" . $row['ISBN'] . "</td>";
     echo "<td>" . $row['Price'] . "</td>"; 
     echo "<td bgcolor=\"white\"><div id=\"cartQuantity".$row['ISBN']."\" style=\"background-color:lightblue\" contenteditable>" . $row['Quantity'] . "</div><a href=\"orders.php\" onclick='updateOrder(\"".$row['ISBN'] . "\",".$row['OrderID'].",\"updateQuantity\")'>update</a></td>";
-    echo "<td><a href=\"orders.php\" onclick='updateOrder(\"".$row['ISBN'] . "\",".$row['OrderID'].",\"deleteItem\")'>delete<a></td>"; 
+    echo "<td><a href=\"orders.php\" onclick='updateOrder(\"".$row['ISBN'] . "\",".$row['OrderID'].",\"deleteItem\")'>Delete<a></td>"; 
     echo "</tr>";
 }
 echo "</table>";
-echo "<h2>Order Total: $". $total ."</h2>";
-echo "<h2><a href=\"orders.php\" onclick='updateOrder(\"None\",".$OrderID.",\"checkout\")'>Checkout</a></h2>";
+if($total != 0)
+{
+    echo "<h2>Order Total: $". $total ."</h2>";
+    echo "<h2><a href=\"orders.php\" onclick='updateOrder(\"None\",".$OrderID.",\"checkout\")'>Checkout</a></h2>";
+}
 } else{
 
 $total = 0;
@@ -163,7 +172,7 @@ echo "<table>
 <th>Quantity</th>
 </tr>";
 while($row = mysqli_fetch_array($result)) {
-    $total = $total + doubleval($row['Price']);
+    $total = $total + doubleval($row['Price']) * intval($row['Quantity']);
     echo "<tr>";
     echo "<td>" . $row['OrderID'] . "</td>";
     echo "<td>" . $row['UserName'] . "</td>";         

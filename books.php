@@ -54,8 +54,8 @@
                     if($to == '')
                         $to = 3000;
                         
-                    $query = "SELECT IF(CHAR_LENGTH(Title)>50,CONCAT(SUBSTR(Title,1,68),'...'),Title),TypeName,Year,ISBN,Format(Price,2) FROM BooksAuthors WHERE title like '%$book%' and year >= $from and year <= $to GROUP BY ISBN LIMIT $limitA,$perPage;";
-                    $count = "SELECT COUNT(*) FROM `books` WHERE title like '%$book%' and year >= $from and year <= $to;";
+                    $query = "SELECT IF(CHAR_LENGTH(Title)>50,CONCAT(SUBSTR(Title,1,68),'...'),Title),TypeName,Year,ISBN,Format(Price,2) FROM BooksAuthors WHERE title like '%$book%' and year >= $from and year <= $to and authorname like '%$auth%' GROUP BY ISBN LIMIT $limitA,$perPage;";
+                    $count = "SELECT COUNT(*) FROM BooksAuthors WHERE title like '%$book%' and year >= $from and year <= $to and authorname like '%$auth%';";
                 }
                 $i = 0;
 //                echo $query;

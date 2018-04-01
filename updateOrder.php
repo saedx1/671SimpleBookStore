@@ -115,7 +115,11 @@ $con=mysqli_connect("dbproject.saadmtsa.club","root","password","dbproject");
 
 /*mysqli_select_db($con,"ajax_demo");*/
 
-
+$Quantity = $_GET['Quantity'];
+if($Quantity === '0')
+{
+    $Method = "deleteItem";
+}
 if($Method == "deleteItem"){
 
 $sql="delete FROM orderitems WHERE OrderID='$OrderID' AND ISBN='$ISBN';";

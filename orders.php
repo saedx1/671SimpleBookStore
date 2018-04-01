@@ -6,10 +6,10 @@
 <script type='text/javascript' src="scripts.js"></script>
 <script>
 function showUser(str) {
-
 	var user = getCookie('username');
     if (str == "") {
         document.getElementById("txtHint").innerHTML = "";
+        showHideYears('1');
         return;
     } else { 
         if (window.XMLHttpRequest) {
@@ -24,8 +24,33 @@ function showUser(str) {
                 document.getElementById("txtHint").innerHTML = this.responseText;
             }
         };
-        xmlhttp.open("GET","getOrders.php?state="+str,true);
-       xmlhttp.send();
+        var from = document.getElementById('yearfrom').value;
+        var to = document.getElementById('yearto').value;
+        if(from === '')
+            from = '0';
+        if(to === '')
+            to = '3000';
+        xmlhttp.open("GET","getOrders.php?state="+str+"&from="+from+"&to="+to,true);
+        xmlhttp.send();
+        showHideYears(str);    
+    }
+}
+function ordersOnLoad()
+{
+    showMenu();
+    showUser('1');
+}
+function showHideYears(str)
+{
+    if(str === '4')
+    {
+        document.getElementById('yfromrow').style.display = '';
+        document.getElementById('ytorow').style.display = '';
+    }
+    else
+    {
+        document.getElementById('yfromrow').style.display = 'none';
+        document.getElementById('ytorow').style.display = 'none';   
     }
 }
 </script>
@@ -96,10 +121,11 @@ console.log(Method+"in scripts else");
 
 
 </head>
-<h1>
-            Your Cart
-</h1>
-<div class = "menu" style="margin-bottom: 2em;">
+<body onload="ordersOnLoad()">
+        <h1>
+            671 BookStore
+        </h1>
+        <div class = "menu" style="margin-bottom: 2em;">
         <center>
             <a href=".">Home</a>
             <a href="books.php">Books</a>
@@ -113,16 +139,33 @@ console.log(Method+"in scripts else");
         </div>
 
 <body>
-
+<h1>
+            Your Cart
+</h1>
 
 <form>
-<select name="users" onchange="showUser(this.value)">
-  <option value="">Select an order option:</option>
-  <option value="1">Cart</option>
-  <option value="2">Processing</option>
-  <option value="3">Shipped</option>
-  <option value="4">Past</option>
-  </select>
+<div class = 'filter'>
+    <table style="width:50%">
+        <tr>
+            <center>
+                <select id = "order_status" name="users" onchange="showUser(this.value)">
+                <option value="1">Cart</option>
+                <option value="2">Processing</option>
+                <option value="3">Shipped</option>
+                <option value="4">Past</option>
+                </select>
+            </center>
+        </tr>
+        <tr id= 'yfromrow' style='display:none'>
+            <th><section class='const'>Year From</section></th>
+            <th><input id='yearfrom' type="text" name="YFrom" pattern="[0-9]{4}" title="Year should be 4 digits."></th>
+        </tr>
+        <tr  id= 'ytorow' style='display:none'>
+            <th><section class='const'>Year To</section></th>
+            <th><input id='yearto' type="text" name="YTo" pattern="[0-9]{4}" title="Year should be 4 digits."></th>
+        </tr>
+    </table>
+</div>
 </form>
 <br>
 <div id="txtHint"><b>Order info will be listed here...</b></div>
