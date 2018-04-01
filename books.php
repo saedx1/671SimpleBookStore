@@ -64,7 +64,7 @@
                 //$myUser = $_COOKIE['username']; old version, delete when stable   
                 foreach($table as $row)
                 {
-                    $result = mysqli_query($con, "SELECT AuthorName From BooksAuthors B JOIN Authors ON B.AuthorID = A.AuthorID WHERE ISBN = $row[3];");
+                    $result = mysqli_query($con, "SELECT A.AuthorName From authors_books B JOIN Authors A ON B.AuthorID = A.AuthorID WHERE B.ISBN = '$row[3]';");
                     $authorsCol = mysqli_fetch_all($result);
                     $authors = '';
                     foreach($authorsCol as $author)
