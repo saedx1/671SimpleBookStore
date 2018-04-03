@@ -158,7 +158,7 @@ echo "</table>";
 if($total != 0)
 {
     echo "<h2>Order Total: $". $total ."</h2>";
-    echo "<h2><a href=\"orders.php\" onclick='updateOrder(\"None\",".$OrderID.",\"checkout\")'>Checkout</a></h2>";
+    echo "<h2><a href=\"#\" onclick='updateOrder(\"None\",".$OrderID.",\"checkout\")'>Checkout</a></h2>";
 }
 } else{
 
@@ -166,8 +166,8 @@ $total = 0;
 echo "<table>
 <tr>
 <th>OrderID</th>
-<th>UserName</th>
 <th>Title</th>
+<th>ISBN</th>
 <th>Price</th>
 <th>Quantity</th>
 </tr>";
@@ -175,8 +175,8 @@ while($row = mysqli_fetch_array($result)) {
     $total = $total + doubleval($row['Price']) * intval($row['Quantity']);
     echo "<tr>";
     echo "<td>" . $row['OrderID'] . "</td>";
-    echo "<td>" . $row['UserName'] . "</td>";         
-    echo "<td>" . $row['Title'] . "</td>";
+    echo "<td>" . $row['Title'] . "</td>";         
+    echo "<td>" . $row['ISBN'] . "</td>";
     echo "<td>" . $row['Price'] . "</td>"; 
     echo "<td>" . $row['Quantity'] . "</td>";
     echo "</tr>";

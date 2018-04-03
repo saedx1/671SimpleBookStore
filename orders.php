@@ -284,16 +284,46 @@ if($orderID==null){
 debug_to_console( $orderID ."line 151");
 /*add book to cart*/
 if($orderID!=null){
+
+
 	$sql2 = "INSERT INTO orderitems (OrderID, ISBN, Quantity) VALUES ('$orderID', '$ISBN','1' )";
 	if ($con->query($sql2) === TRUE) {
 	    	echo "New item added successfully";
+				//update book stock
+				$sql = "UPDATE books SET Stock = Stock - 1 where ISBN = '$ISBN';";
+				if ($con->query($sql) === TRUE) {
+					echo "Quantity for order updated successfully";
+				} else { 					
+					echo "Error: " . $sql . "<br>" . $con->error;
+				}
+
 		} else { //Book already in cart: increment Quantity
-			$sql3 = "UPDATE  orderitems SET Quantity = Quantity + 1 where OrderID = '$orderID' AND ISBN = '$ISBN';";
+			
+
+			//update book stock
+			$sql = "UPDATE books SET Stock = Stock - 1 where ISBN = '$ISBN';";
+				if ($con->query($sql) === TRUE) {
+
+					//update order
+					$sql3 = "UPDATE orderitems SET Quantity = Quantity + 1 where OrderID = '$orderID' AND ISBN = '$ISBN';";
+					if ($con->query($sql3) === TRUE) {
+						echo "Book Stock updated successfully";
+					} else { 					
+						echo "Error: " . $sql3 . "<br>" . $con->error;
+					}
+					echo "Quantity for order updated successfully";
+				} else { 					
+					echo "Error: " . $sql . "<br>" . $con->error;
+				}
+
+/*
+$sql3 = "UPDATE  orderitems SET Quantity = Quantity + 1 where OrderID = '$orderID' AND ISBN = '$ISBN';";
 			if ($con->query($sql3) === TRUE) {
 	    			echo "New item updated successfully";
 				} else { 					
 	   			 echo "Error: " . $sql . "<br>" . $con->error;
 			}
+*/
 	   	 
 		}
 }

@@ -115,11 +115,17 @@ $con=mysqli_connect("dbproject.saadmtsa.club","root","password","dbproject");
 
 /*mysqli_select_db($con,"ajax_demo");*/
 
-$Quantity = $_GET['Quantity'];
-if($Quantity === '0')
-{
-    $Method = "deleteItem";
+if(isset($_GET['Quantity'])){
+	$Quantity = $_GET['Quantity'];
+
+	//if Quantity <= 0, delete item
+	if($Quantity === '0' || $Quantity <=0)
+	{
+	    $Method = "deleteItem";
+	}
 }
+
+//delete item
 if($Method == "deleteItem"){
 
 $sql="delete FROM orderitems WHERE OrderID='$OrderID' AND ISBN='$ISBN';";
@@ -129,18 +135,87 @@ $sql="delete FROM orderitems WHERE OrderID='$OrderID' AND ISBN='$ISBN';";
 		 echo "Error: " . $sql . "<br>" . $con->error;
 	}
 } else if($Method == "updateQuantity"){
-$Quantity = $_GET['Quantity'];
-$sql = "UPDATE  orderitems SET Quantity = '$Quantity' where OrderID = '$OrderID' AND ISBN = '$ISBN';";
-	if ($con->query($sql) === TRUE) {
-			echo "Quantity updated successfully";
-			} else { 					
-			 echo "Error: " . $sql . "<br>" . $con->error;
+
+	//check if item in exist
+	if(false/*mysqli_num_rows($result) == 0*/)
+	{
+	echo "ISBN does not exist";
+	} else{
+		/*check if item is in stock*/
+
+		$sql = "SELECT  Stock from books where ISBN = '$ISBN';";
+		$result = mysqli_query($con, $sql);
+		$stock=-1;
+		while($row = mysqli_fetch_array($result)) { //find stock
+			$stock=$row['Stock'];
 		}
+
+		//check if new quanity is less than old quantity
+		$sql = "SELECT  Quantity from orderitems where ISBN = '$ISBN' and OrderID = '$OrderID';";
+		$result = mysqli_query($con, $sql);
+		$oldQuantity=-1;
+		while($row = mysqli_fetch_array($result)) { //find stock
+			$oldQuantity=$row['Quantity'];
+		}
+		//make Quantity negative if we are removing items from cart
+		//if($oldQuantity>$Quantity){
+		$subQuantity = $Quantity-$oldQuantity;
+		//} else{
+		//$subQuantity = $oldQuantity-$Quantity;
+		//}
+
+		
+		//check if amount requested is avalible 
+		$updateQuantity= intval($stock-$subQuantity);
+		//debug_to_console( $updateQuantity );
+		//echo "updateQuantity=" . $updateQuantity;
+		if($updateQuantity>=0){
+		
+		//update book stock
+		$sql = "UPDATE books SET Stock = '$updateQuantity' where ISBN = '$ISBN';";
+			if ($con->query($sql) === TRUE) {
+				
+				//make sure Quantity is positive
+				//$Quantity = abs($Quantity);
+				 
+				//update order
+				$sql2 = "UPDATE orderitems SET Quantity = '$Quantity' where OrderID = '$OrderID' AND ISBN = '$ISBN';";
+				if ($con->query($sql2) === TRUE) {
+					echo "Book Stock updated successfully";
+				} else { 					
+					echo "Error: " . $sql2 . "<br>" . $con->error;
+				}
+				echo "Quantity for order updated successfully";
+			} else { 					
+				echo "Error: " . $sql . "<br>" . $con->error;
+			}
+
+		
+		} else{
+			echo "Item does not have enough stock for amount requested";
+		}
+	}
 
 } else if($Method == "checkout"){
   $sql = "UPDATE  orders SET State = '$checkout' where OrderID = '$OrderID' AND UserName = '$username';";
   if ($con->query($sql) === TRUE) {
 			echo "Order is being processed";
+			
+			//alert customer that order is being processed
+			
+			//check if new quanity is less than old quantity
+			$sql = "SELECT  Address, CreditCard from users where Username = '$username';";
+			$result = mysqli_query($con, $sql);
+			$address=-1;
+			$credit=-1;
+			while($row = mysqli_fetch_array($result)) { //find stock
+				$address=$row['Address'];
+				$credit=$row['CreditCard'];
+			}
+
+			//echo '<script type="text/javascript">';
+			echo '<h3>Order will be shipped to "'. $address . '" using credit card "' . $credit . '" as payment)</h3>';
+			//echo '</script>';
 			} else { 					
 			 echo "Error: " . $sql . "<br>" . $con->error;
 		}

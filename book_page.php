@@ -62,7 +62,7 @@
                                 <h4>Price: $row[4]$</h4>
                             </div>
                             <form method='POST'>
-                               <h2><a href='orders.php?ISBN=$row[3]' style='$cart'>Add to Cart</a></h2>
+                               <h2><a href='orders.php?ISBN=$isbn' style='$cart'>Add to Cart</a></h2>
                             </form>
                         </center>";
             }
