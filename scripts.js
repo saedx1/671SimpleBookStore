@@ -6,8 +6,7 @@ function showMenu()
         if(username == 'admin')
         {
             document.getElementById('admin').style.display = '';
-            document.getElementById('signout').style.display = '';
-            document.getElementById('myaccount').style.display = '';            
+            document.getElementById('signout').style.display = '';      
         }
         else
         {
