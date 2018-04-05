@@ -61,7 +61,9 @@ foreign key (`ISBN`) references Books (`ISBN`)  );
 INSERT INTO `types` (`TypeID`, `TypeName`) VALUES ('2', 'Sci-Fi'), ('3', 'Drama'), ('4', 'Thriller'), ('6', 'Comedy'), ('8', 'Documentary'), ('11', 'Action'), ('15', 'Horror'), ('16', 'Children'), ('23', 'Adventure'), ('24', 'Western'), ('25', 'Mystery'), ('61', 'Crime'), ('88', 'Romance'), ('97', '(no genres listed)'), ('116', 'Film-Noir'), ('129', 'Animation'), ('145', 'Musical'), ('445', 'War'), ('710', 'Fantasy'), ('968', 'IMAX')
 
 
-
-
-
-
+create table shipping
+(`OrderID`  int(11) not null,
+`Address`  varchar(50),
+`Credit_Card`  varchar(50),
+primary key (`OrderID`),
+foreign key (`OrderID`) references orders (`OrderID`)); 
