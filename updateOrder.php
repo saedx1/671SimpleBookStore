@@ -194,33 +194,7 @@ $sql="delete FROM orderitems WHERE OrderID='$OrderID' AND ISBN='$ISBN';";
 			echo "Item does not have enough stock for amount requested";
 		}
 	}
-
-} else if($Method == "checkout"){
-  $sql = "UPDATE  orders SET State = '$checkout' where OrderID = '$OrderID' AND UserName = '$username';";
-  if ($con->query($sql) === TRUE) {
-			echo "Order is being processed";
-			
-			//alert customer that order is being processed
-			
-			//check if new quanity is less than old quantity
-			$sql = "SELECT  Address, CreditCard from users where Username = '$username';";
-			$result = mysqli_query($con, $sql);
-			$address=-1;
-			$credit=-1;
-			while($row = mysqli_fetch_array($result)) { //find stock
-				$address=$row['Address'];
-				$credit=$row['CreditCard'];
-			}
-
-			//echo '<script type="text/javascript">';
-//			echo "<script type='text/javascript'>alert('hello');</script>";
-			echo "<script type='text/javascript'>alert('hi');</script>";
-			//echo '<h3>Order will be shipped to "'. $address . '" using credit card "' . $credit . '" as payment)</h3>';
-			//echo '</script>';
-			} else { 					
-			 echo "Error: " . $sql . "<br>" . $con->error;
-		}
-}
+} 
 
 //debug
 //echo "<h2>".$ISBN." ".$OrderID." ". $Method . "</h2>";
