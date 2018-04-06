@@ -97,10 +97,10 @@ $username = $_COOKIE['username'];
 $ISBN = $_GET['ISBN'];
 $OrderID = $_GET['OrderID'];
 $Method = $_GET['Method'];
-debug_to_console($username);
-debug_to_console($ISBN);
-debug_to_console($OrderID);
-debug_to_console($Method);
+//debug_to_console($username);
+//debug_to_console($ISBN);
+//debug_to_console($OrderID);
+//debug_to_console($Method);
 //constant for checkout state
 $checkout = 2;
 

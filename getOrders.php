@@ -158,7 +158,8 @@ echo "</table>";
 if($total != 0)
 {
     echo "<h2>Order Total: $". $total ."</h2>";
-    echo "<h2><a href=\"#\" onclick='updateOrder(\"None\",".$OrderID.",\"checkout\")'>Checkout</a></h2>";
+    //echo "<h2><a href=\"#\" onclick='updateOrder(\"None\",".$OrderID.",\"checkout\")'>Checkout</a></h2>";
+    echo "<h2><a href=\"checkout.php?OrderID=$OrderID\">Checkout</a></h2>";
 }
 } else{
 
