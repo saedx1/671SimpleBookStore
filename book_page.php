@@ -41,7 +41,13 @@
 					
 		
                 $isbn = $_GET['isbn'];
+                $user = $_COOKIE['username'];
+                if($user == 'admin'){
+                    $query = "SELECT Title, TypeName, Year, Stock, Price,AuthorName FROM `BooksAuthors` WHERE ISBN = '$isbn';";
+                }
+                else{
                 $query = "SELECT Title, TypeName, Year, IF(Stock > 0, 'Available','Out of Stock'), Price,AuthorName FROM `BooksAuthors` WHERE ISBN = '$isbn';";
+                }
                 $result = mysqli_query($con, $query);
                 $table = mysqli_fetch_all($result);
                 $authors = '';
