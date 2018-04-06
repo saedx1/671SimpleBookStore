@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
 <head>
 <style>
@@ -214,7 +213,9 @@ $sql="delete FROM orderitems WHERE OrderID='$OrderID' AND ISBN='$ISBN';";
 			}
 
 			//echo '<script type="text/javascript">';
-			echo '<h3>Order will be shipped to "'. $address . '" using credit card "' . $credit . '" as payment)</h3>';
+//			echo "<script type='text/javascript'>alert('hello');</script>";
+			echo "<script type='text/javascript'>alert('hi');</script>";
+			//echo '<h3>Order will be shipped to "'. $address . '" using credit card "' . $credit . '" as payment)</h3>';
 			//echo '</script>';
 			} else { 					
 			 echo "Error: " . $sql . "<br>" . $con->error;

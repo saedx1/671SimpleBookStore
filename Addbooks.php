@@ -100,13 +100,11 @@
 
             $myquery = "INSERT INTO books 
                      VALUES ('$isbn1','$title1','$typeID1','$year1','$stock1','$price1');";
-            echo "$myquery";
             $myquery1 = "INSERT INTO authors 
                         VALUES (null,'$author1');
                         Set @last_ID = LAST_Insert_ID();
                         INSERT INTO authors_books (ISBN,AuthorID)
                         VALUES ('$isbn1',@last_ID);";
-            echo "$myquery1";
 
             if ($con->query($myquery) === TRUE && $con->multi_query($myquery1) === True) {
                 echo "Book successfully added";

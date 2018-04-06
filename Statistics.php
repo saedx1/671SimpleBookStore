@@ -28,11 +28,11 @@
                 <table width="800" padding="25px">
                     <tr>
                         <th><section class='const'>From Date</section></th>
-                        <th><input type="text" name="FDate" pattern="[0-9]{4}-[0-9]{1,12}-[0-9]{1,31}" title="year, month, day: XXXX-XX-XX"></th>
+                        <th><input type="date" name="FDate" pattern="[0-9]{4}-[0-9]{1,12}-[0-9]{1,31}" title="year, month, day: XXXX-XX-XX"></th>
                     </tr>
                     <tr>
                         <th><section class='const'>To Date</section></th>
-                        <th><input type="text" name="TDate"pattern="[0-9]{4}-[0-9]{1,12}-[0-9]{1,31}" title="year, month, day: XXXX-XX-XX"></th>
+                        <th><input type="date" name="TDate"pattern="[0-9]{4}-[0-9]{1,12}-[0-9]{1,31}" title="year, month, day: XXXX-XX-XX"></th>
                     </tr>
                 </table>
             </div>
@@ -56,7 +56,6 @@
             $FDate = $HolderA . " 00:00:00";
             $TDate = $HolderB . " 23:59:59";
 
-            echo "$FDate              $TDate";
 
 
 
