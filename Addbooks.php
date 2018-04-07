@@ -89,22 +89,43 @@
             $stock1 = $_POST['Stock'];
             $price1 = $_POST['Price'];
             $author1 = $_POST['author1'];
-
-            $author2 = $_POST['author2'];
-
-            $author3 = $_POST['author3'];
-
-
+            if('author2'!="")
+                $author2 = $_POST['author2'];
+            else
+                $author2 = NULL;
+            if('author3'!="")
+                $author3 = $_POST['author3'];
+            else 
+                $author3 = NULL; 
+           
 
 
 
             $myquery = "INSERT INTO books 
                      VALUES ('$isbn1','$title1','$typeID1','$year1','$stock1','$price1');";
+          
             $myquery1 = "INSERT INTO authors 
                         VALUES (null,'$author1');
-                        Set @last_ID = LAST_Insert_ID();
+                        Set @last_ID1 = LAST_Insert_ID();
                         INSERT INTO authors_books (ISBN,AuthorID)
-                        VALUES ('$isbn1',@last_ID);";
+                        VALUES ('$isbn1',@last_ID1);";
+            
+            if($author2==NULL){
+            $myquery1 = $myquery1."INSERT INTO authors 
+                        VALUES (null,'$author2');
+                        Set @last_ID2 = LAST_Insert_ID();
+                        INSERT INTO authors_books (ISBN,AuthorID)
+                        VALUES ('$isbn1',@last_ID2);";
+            }
+            if($author3==NULL){
+            $myquery1 = $myquery1."INSERT INTO authors 
+                        VALUES (null,'$author3');
+                        Set @last_ID3 = LAST_Insert_ID();
+                        INSERT INTO authors_books (ISBN,AuthorID)
+                        VALUES ('$isbn1',@last_ID3);";
+            }
+           
+            
 
             if ($con->query($myquery) === TRUE && $con->multi_query($myquery1) === True) {
                 echo "Book successfully added";
