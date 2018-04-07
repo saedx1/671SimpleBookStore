@@ -100,50 +100,24 @@ console.log(Method+"in scripts else");
         $result = mysqli_query($con, $query);
         $table = mysqli_fetch_all($result);
 
-
-
         foreach ($table as $row) {
 
-            if ($row[2] <= 2) {
-                $State1 = "Unprocessed";
-            } else {
-                $State1 = "Processed";
-            }
-            
             echo "<center>
                             <div class='bookInfo'>
                             <form action=\"Processpurchase.php\" method='POST'>
                               
                                 <h4>OrderID: $row[0]</h4>
                                 <h4>UserName: $row[1]</h4>
-                                <h4>State: $State1</h4>
+                                <h4>State: Unprocessed</h4>
                                 <h4>DateTime: $row[3]</h4>
-                                     <button name='orderid' value='$row[0]' type='submit'>Process</button>
+                                <button name='orderid' value='$row[0]' type='submit'>Process</button>
                              </form>
                             </div>
                           <br padding=20px></br>
                         </center> ";
         }
-         if (isset($_POST['update'])) {
-         $query1 = "UPDATE orders
-                        SET State = 3
-                        where State = 2;";
-         if ($con->query($query1) === TRUE ) {
-                header('Location: Processed.php');
-            } else {
-                echo "Update Unsucessful";
-            }
-  
-                     
-         }
          $con->close();
         ?>
-         <form method='POST'>
-            <center >
-                
-              <h2><input type="submit"  name="update" value="update"></h2>
-             </center>
-            <br padding=20px></br>
          </form>
     </body>
 

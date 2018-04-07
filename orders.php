@@ -26,13 +26,15 @@ function showUser(str) {
         };
         var from = document.getElementById('yearfrom').value;
         var to = document.getElementById('yearto').value;
+
         if(from === '')
-            from = '0';
+            from = '1990-01-01';
         if(to === '')
-            to = '3000';
+            to = '2100-01-01';
+        
         xmlhttp.open("GET","getOrders.php?state="+str+"&from="+from+"&to="+to,true);
         xmlhttp.send();
-        showHideYears(str);    
+        showHideYears(str);
     }
 }
 function ordersOnLoad()
@@ -46,11 +48,13 @@ function showHideYears(str)
     {
         document.getElementById('yfromrow').style.display = '';
         document.getElementById('ytorow').style.display = '';
+        document.getElementById('lookItUp').style.display = '';
     }
     else
     {
         document.getElementById('yfromrow').style.display = 'none';
         document.getElementById('ytorow').style.display = 'none';   
+        document.getElementById('lookItUp').style.display = 'none';   
     }
 }
 </script>
@@ -144,8 +148,9 @@ console.log(Method+"in scripts else");
 </h1>
 
 <form>
-<div class = 'filter'>
-    <table style="width:50%">
+    <center>
+    
+        <table style="width:50%"  class="responstable">
         <tr>
             <center>
                 <select id = "order_status" name="users" onchange="showUser(this.value)">
@@ -156,20 +161,26 @@ console.log(Method+"in scripts else");
                 </select>
             </center>
         </tr>
-        <tr id= 'yfromrow' style='display:none'>
-            <th><section class='const'>Year From</section></th>
-            <th><input id='yearfrom' type="text" name="YFrom" pattern="[0-9]{4}" title="Year should be 4 digits."></th>
-        </tr>
-        <tr  id= 'ytorow' style='display:none'>
-            <th><section class='const'>Year To</section></th>
-            <th><input id='yearto' type="text" name="YTo" pattern="[0-9]{4}" title="Year should be 4 digits."></th>
-        </tr>
-    </table>
-</div>
+        <form action=''>
+            <tr id= 'yfromrow' style='display:none'>
+                <th><section class='const'>Year From</section></th>
+                <th><input id='yearfrom' type="date" style="width:100%" name="YFrom" pattern="[0-9]{4}" title="Year should be 4 digits."></th>
+            </tr>
+            <tr  id= 'ytorow' style='display:none'>
+                <th><section class='const'>Year To</section></th>
+                <th><input id='yearto' type="date" style="width:100%" name="YTo" pattern="[0-9]{4}" title="Year should be 4 digits."></th>
+            </tr>
+            <tr id='lookItUp'>
+                <th colspan="2"><input  type="button" onclick='showUser("4")' value='Look it up'></th>
+            </tr>
+        </form>
+    </table>    
+    
+    </center>
 </form>
 <br>
-<div id="txtHint"><b>Order info will be listed here...</b></div>
-<div id="debug"><b>Important info will be listed here...</b></div>
+<div id="txtHint"><b></b></div>
+<div id="debug"><b></b></div>
 
 
 <?php 
@@ -288,11 +299,11 @@ if($orderID!=null){
 
 	$sql2 = "INSERT INTO orderitems (OrderID, ISBN, Quantity) VALUES ('$orderID', '$ISBN','1' )";
 	if ($con->query($sql2) === TRUE) {
-	    	echo "New item added successfully";
+	    	echo "New item added successfully<br>";
 				//update book stock
 				$sql = "UPDATE books SET Stock = Stock - 1 where ISBN = '$ISBN';";
 				if ($con->query($sql) === TRUE) {
-					echo "Quantity for order updated successfully";
+//					echo "Quantity for order updated successfully";
 				} else { 					
 					echo "Error: " . $sql . "<br>" . $con->error;
 				}
@@ -311,7 +322,7 @@ if($orderID!=null){
 					} else { 					
 						echo "Error: " . $sql3 . "<br>" . $con->error;
 					}
-					echo "Quantity for order updated successfully";
+//					echo "Quantity for order updated successfully";
 				} else { 					
 					echo "Error: " . $sql . "<br>" . $con->error;
 				}

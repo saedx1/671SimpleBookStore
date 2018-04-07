@@ -41,7 +41,7 @@
                     $mypage = $_GET["page"];
                     $limitA = ($mypage - 1) * $perPage;
                 }
-                $query = "SELECT IF(CHAR_LENGTH(Title)>70,CONCAT(SUBSTR(Title,1,68),'...'),Title),TypeName,Year,ISBN,Format(Price,2) FROM BooksAuthors GROUP BY ISBN LIMIT $limitA,$perPage;";
+                $query = "SELECT IF(CHAR_LENGTH(Title)>70,CONCAT(SUBSTR(Title,1,68),'...'),Title),TypeName,Year,ISBN,Format(Price,2), Stock FROM BooksAuthors GROUP BY ISBN LIMIT $limitA,$perPage;";
                 $count = "SELECT COUNT(*) FROM `books`;";
                 if(isset($_POST['Search']))
                 {
@@ -54,7 +54,7 @@
                     if($to == '')
                         $to = 3000;
                         
-                    $query = "SELECT IF(CHAR_LENGTH(Title)>50,CONCAT(SUBSTR(Title,1,68),'...'),Title),TypeName,Year,ISBN,Format(Price,2) FROM BooksAuthors WHERE title like '%$book%' and year >= $from and year <= $to and authorname like '%$auth%' GROUP BY ISBN LIMIT $limitA,$perPage;";
+                    $query = "SELECT IF(CHAR_LENGTH(Title)>50,CONCAT(SUBSTR(Title,1,68),'...'),Title),TypeName,Year,ISBN,Format(Price,2), Stock FROM BooksAuthors WHERE title like '%$book%' and year >= $from and year <= $to and authorname like '%$auth%' GROUP BY ISBN LIMIT $limitA,$perPage;";
                     $count = "SELECT COUNT(*) FROM BooksAuthors WHERE title like '%$book%' and year >= $from and year <= $to and authorname like '%$auth%';";
                 }
                 $i = 0;
@@ -111,16 +111,26 @@
                                         </tr>
                                         <tr>
                                             <td colspan='2'>
-                                                <h4>$row[4]$</h4>
+                                                <h4>$$row[4]</h4>
                                             </td>
                                         </tr>
                                     </table>
-                                    <form method='POST'>
-                                        <a href='orders.php?ISBN=$row[3]' style='$cart'>Add to Cart</a>
-                                    </form>
-                                </div>
-                                </a>
+                                    
+                                
                             ";
+                    
+                    if($row[5] !== '0')
+                    {
+                        echo "<form method='POST'>
+                                        <a href='orders.php?ISBN=$row[3]' style='$cart'>Add to Cart</a>
+                                    </form>";
+                    }
+                    else
+                    {
+                        echo "Out of Stock";
+                    }
+                    echo "</div>
+                                </a>";
                 }
                 $result = mysqli_query($con,$count);
                 $row = mysqli_fetch_row($result);

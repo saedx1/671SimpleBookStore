@@ -29,10 +29,6 @@
                 <input type="password" name="password" maxlength="20" style="width:35%" required>
                 <h3>EMail</h3>
                 <input type="email" name="email" maxlength="50" style="width:35%" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required>
-                <h3>Address</h3>
-                <textarea name="address" rows="5" style="width:35%;resize:none" pattern="[A-Za-z0-9]{1,80}" title="Address should contain each part on a single line." required></textarea>
-                <h3>Credit Card</h3>
-                <input type="text" name="ccno" style="width:35%" pattern="[0-9]{16-20}" title="Should be 16-20 digits." required>
                 <br>
                 <br>
                 <input type="submit" value="Register" name="Register">
@@ -50,7 +46,7 @@
                     $email =  $_POST['email'];
                     $address =  $_POST['address'];
                     $ccno =  $_POST['ccno'];
-                    $myquery = "INSERT INTO users VALUES('$username',MD5('$password'),'$email',1,NOW(),'$address','$ccno');";
+                    $myquery = "INSERT INTO users VALUES('$username',MD5('$password'),'$email',1,NOW());";
                     if ($con->query($myquery) === TRUE) {
                         echo "Account has been created successfully";
                     } else {

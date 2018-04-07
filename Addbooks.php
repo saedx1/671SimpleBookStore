@@ -26,47 +26,47 @@
         <form  method="POST">
             <div class="filter">
                 <h1>Add Books</h1>
-                <table width="800">
+                <table width="800" class='responstable'>
                     <tr>
-                        <th><section class='const'>ISBN</section></th>
-                        <th><input type="text" name="ISBN" pattern="[0-9]{10,13}" title="Must be 10 to 13 digits"></th>
+                        <td><section class='const'>ISBN</section></td>
+                        <td><input type="text" name="ISBN" pattern="[0-9]{10,13}" title="Must be 10 to 13 digits" style='width:100%'></td>
                     </tr>
                     <tr>
-                        <th><section class='const'>Title</section></th>
-                        <th><input type="text" name="Title" ></th>
+                        <td><section class='const'>Title</section></td>
+                        <td><input type="text" name="Title" style='width:100%'></td>
                     </tr>
                     <tr>
-                        <th><section class='const'>Author 1</section></th>
-                        <th><input type="text" name="author1"></th>
+                        <td><section class='const'>Author 1</section></td>
+                        <td><input type="text" name="author1" style='width:100%'></td>
 
                     </tr>
                     <tr>
-                        <th><section class='const'>Author 2</section></th>
-                        <th><input type="text" name="author2"></th>
+                        <td><section class='const'>Author 2</section></td>
+                        <td><input type="text" name="author2" style='width:100%'></td>
 
                     </tr>
                     <tr>
-                        <th><section class='const'>Author 3</section></th>
-                        <th><input type="text" name="author3"></th>
+                        <td><section class='const'>Author 3</section></td>
+                        <td><input type="text" name="author3" style='width:100%'></td>
 
                     </tr>
 
                     <tr>
-                        <th><section class='const'>Price</section></th>
-                        <th><input type="text" name="Price" pattern="[0-9]{0,99}.[0-9]{0,99}" title="Must be in the form (23.54)"></th>
+                        <td><section class='const'>Price</section></td>
+                        <td><input type="text" name="Price" pattern="[0-9]{0,99}.[0-9]{0,99}" title="Must be in the form (23.54)" style='width:100%'></td>
                     </tr>
                     <tr>
-                        <th><section class='const'>Stock</section></th>
-                        <th><input type="text" name="Stock" pattern="[0-9]{0,999}" title="must be under 1000"></th>
+                        <td><section class='const'>Stock</section></td>
+                        <td><input type="text" name="Stock" pattern="[0-9]{0,999}" title="must be under 1000" style='width:100%'></td>
                     </tr>
 
                     <tr>
-                        <th><section class='const'>TypeID</section></th>
-                        <th><input type="int" name="TID" pattern="[0-9]{1,100}" title="must be under 100"></th>
+                        <td><section class='const'>TypeID</section></td>
+                        <td><input type="int" name="TID" pattern="[0-9]{1,100}" title="must be under 100" style='width:100%'></td>
                     </tr>
                     <tr>
-                        <th><section class='const'>Year</section></th>
-                        <th><input type="text" name="Year" pattern="[0-9]{4}" title="must be four digits"></th>
+                        <td><section class='const'>Year</section></td>
+                        <td><input type="text" name="Year" pattern="[0-9]{4}" title="must be four digits" style='width:100%'></td>
                     </tr>   
                 </table>
             </div>
@@ -74,7 +74,7 @@
             <br>
             <center>
                 <input type="submit" value="ADD" name="ADD">
-            </center>s
+            </center>
         </form>
         <?php
         $con = mysqli_connect("dbproject.saadmtsa.club", "root", "password", "dbproject");

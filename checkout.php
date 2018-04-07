@@ -130,7 +130,7 @@ function debug_to_console( $data ) {
                         echo "Error: " . $myquery . "<br>" . $con->error;
                     }
 		
-		     $myquery = "UPDATE  orders SET State = '$checkout' where OrderID = '$OrderID' AND UserName = '$username';";
+		     $myquery = "UPDATE  orders SET State = '$checkout', DateTime = Now() where OrderID = '$OrderID' AND UserName = '$username';";
 		     if ($con->query($myquery) === TRUE) {
                         echo "Order is being processed!";
                     } else {

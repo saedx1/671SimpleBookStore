@@ -26,4 +26,5 @@
     <h2><a id="Addbooks" color="blue" href="Addbooks.php">Add Books</a></h2>
     <h2><a id="Statistics" href="Statistics.php">Statistics</a></h2>
     <h2><a id="Processpurchase" href="Processpurchase.php">Process Purchases</a></h2>
+    <h2><a id="outofstock" href="Outofstock.php">Out of Stock</a></h2>
 </html>

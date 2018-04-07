@@ -65,12 +65,17 @@
                                 <h4>Genre: $row[1]</h4>
                                 <h4>Year: $row[2]</h4>
                                 <h4>Stock: $row[3]</h4>
-                                <h4>Price: $row[4]$</h4>
+                                <h4>Price: $$row[4]</h4>
                             </div>
-                            <form method='POST'>
+                            
+                        ";
+                if($row[3] != 'Out of Stock')
+                {
+                    echo "<form method='POST'>
                                <h2><a href='orders.php?ISBN=$isbn' style='$cart'>Add to Cart</a></h2>
-                            </form>
-                        </center>";
+                            </form>";
+                }
+                echo "</center>";
             }
         ?>
     </body>

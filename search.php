@@ -24,26 +24,24 @@
         </div>
         
         <form action="books.php" method="POST">
-            <div class="filter">
-                <table>
+            <table class="responstable">
                     <tr>
-                        <th><section class='const'>Book Name</section></th>
-                        <th><input type="text" name="Book"></th>
+                        <td><section class='const'>Book Name</section></td>
+                        <td><input type="text" name="Book" style="width:100%"></td>
                     </tr>
                     <tr>
-                        <th><section class='const'>Author Name</section></th>
-                        <th><input type="text" name="Author"></th>
+                        <td><section class='const'>Author Name</section></td>
+                        <td><input type="text" name="Author" style="width:100%"></td>
                     </tr>
                     <tr>
-                        <th><section class='const'>Year From</section></th>
-                        <th><input type="text" name="YFrom" pattern="[0-9]{4}" title="Year should be 4 digits."></th>
+                        <td><section class='const'>Year From</section></td>
+                        <td><input type="text" name="YFrom" pattern="[0-9]{4}" title="Year should be 4 digits." style="width:100%"></td>
                     </tr>
                     <tr>
-                        <th><section class='const'>Year To</section></th>
-                        <th><input type="text" name="YTo" pattern="[0-9]{4}" title="Year should be 4 digits."></th>
+                        <td><section class='const'>Year To</section></td>
+                        <td><input type="text" name="YTo" pattern="[0-9]{4}" title="Year should be 4 digits." style="width:100%"></td>
                     </tr>
                 </table>
-            </div>
             <center>
                 <input type="submit" name="Search" value="Search" class='bookinput'>
             </center>

@@ -21,7 +21,7 @@ function showMenu()
     }
 }
 function signin(username)
-{
+{   
     createCookie("username", username, 0);
     redirect("index.php");
 }
