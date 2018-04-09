@@ -99,7 +99,7 @@ function debug_to_console( $data ) {
 
 
         $query = "Select b.ISBN, Title, SUM(ifnull(quantity,0)) as stock
-                  From Books left join orderitems on Books.ISBN=Orderitems.ISBN
+                  From Books as b left join orderitems on b.ISBN=Orderitems.ISBN
 		  Group by b.ISBN
 		  Order by stock ASC
 		  Limit 0, 15;";
@@ -114,7 +114,7 @@ function debug_to_console( $data ) {
                                 <tr>
                                 <th>ISBN</th>
                                 <th>Title</th>
-				<th>Stock</th>
+				<th>Units Sold</th>
                                 </tr>";
                     $t = 1;
                 }

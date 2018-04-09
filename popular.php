@@ -99,11 +99,12 @@ function debug_to_console( $data ) {
 
 
         $query = "Select b.ISBN, Title, SUM(ifnull(quantity,0)) as stock
-                  From Books left join orderitems on Books.ISBN=Orderitems.ISBN
+                  From Books b left join orderitems on b.ISBN=Orderitems.ISBN
 		  Group by b.ISBN
+		  Having stock > 0
 		  Order by stock DESC
 		  Limit 0, 15;";
-
+	
             $result = mysqli_query($con, $query);
             $table = mysqli_fetch_all($result);
             $t = 0;
@@ -114,7 +115,7 @@ function debug_to_console( $data ) {
                                 <tr>
                                 <th>ISBN</th>
                                 <th>Title</th>
-				<th>Stock</th>
+				<th>Units Sold</th>
                                 </tr>";
                     $t = 1;
                 }
