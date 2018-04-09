@@ -23,7 +23,7 @@
             </center>
         </div>
 
-        <form  method="POST">
+        <form method="POST">
             <div class="filter">
                 <h1>Add Books</h1>
                 <table width="800" class='responstable'>
@@ -62,7 +62,29 @@
 
                     <tr>
                         <td><section class='const'>TypeID</section></td>
-                        <td><input type="int" name="TID" pattern="[0-9]{1,100}" title="must be under 100" style='width:100%'></td>
+                        <td>
+                            <select name="Type">
+                                0<?php
+                                    $con = mysqli_connect("dbproject.saadmtsa.club", "root", "password", "dbproject");
+                                    if (mysqli_connect_errno()) {
+                                        echo "Failed to connect to MySQL: " . mysqli_connect_error();
+                                    }
+                                    $query = "SELECT * FROM Types";
+                                    $result = mysqli_query($con,$query);            
+                                    $table = mysqli_fetch_all($result);
+                                    $rn = 0;
+                                    foreach($table as $row) {
+                                        $selected = "";
+                                        if($rn == 0)
+                                        {
+                                            $selected = 'selected';
+                                            $rn = 1;
+                                        }
+                                        echo "<option value='$row[0]' $selected>$row[1]</option>\n";
+                                    }
+                                ?>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
                         <td><section class='const'>Year</section></td>
@@ -84,7 +106,7 @@
         if (isset($_POST['ADD'])) {
             $isbn1 = $_POST['ISBN'];
             $title1 = $_POST['Title'];
-            $typeID1 = $_POST['TID'];
+            $typeID1 = $_POST['Type'];
             $year1 = $_POST['Year'];
             $stock1 = $_POST['Stock'];
             $price1 = $_POST['Price'];
@@ -99,8 +121,7 @@
                 $author3 = NULL; 
            
 
-
-
+            echo $typeID1;
             $myquery = "INSERT INTO books 
                      VALUES ('$isbn1','$title1','$typeID1','$year1','$stock1','$price1');";
           
@@ -110,19 +131,19 @@
                         INSERT INTO authors_books (ISBN,AuthorID)
                         VALUES ('$isbn1',@last_ID1);";
             
-            if($author2==NULL){
-            $myquery1 = $myquery1."INSERT INTO authors 
-                        VALUES (null,'$author2');
-                        Set @last_ID2 = LAST_Insert_ID();
-                        INSERT INTO authors_books (ISBN,AuthorID)
-                        VALUES ('$isbn1',@last_ID2);";
+            if(isset($_POST[$author2])){
+                $myquery1 = $myquery1."INSERT INTO authors 
+                            VALUES (null,'$author2');
+                            Set @last_ID2 = LAST_Insert_ID();
+                            INSERT INTO authors_books (ISBN,AuthorID)
+                            VALUES ('$isbn1',@last_ID2);";
             }
-            if($author3==NULL){
-            $myquery1 = $myquery1."INSERT INTO authors 
-                        VALUES (null,'$author3');
-                        Set @last_ID3 = LAST_Insert_ID();
-                        INSERT INTO authors_books (ISBN,AuthorID)
-                        VALUES ('$isbn1',@last_ID3);";
+            if(isset($_POST[$author3])){
+                $myquery1 = $myquery1."INSERT INTO authors 
+                            VALUES (null,'$author3');
+                            Set @last_ID3 = LAST_Insert_ID();
+                            INSERT INTO authors_books (ISBN,AuthorID)
+                            VALUES ('$isbn1',@last_ID3);";
             }
            
             
