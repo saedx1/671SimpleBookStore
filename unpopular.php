@@ -98,10 +98,11 @@ function debug_to_console( $data ) {
         }
 
 
-        $query = "Select b.ISBN, Title, SUM(quantity) as stock
-                  From Books b, orderitems o WHERE b.ISBN = o.ISBN
-		Group by b.ISBN
-		Order by stock ASC;";
+        $query = "Select b.ISBN, Title, SUM(ifnull(quantity,0)) as stock
+                  From Books left join orderitems on Books.ISBN=Orderitems.ISBN
+		  Group by b.ISBN
+		  Order by stock ASC
+		  Limit 0, 15;";
 
             $result = mysqli_query($con, $query);
             $table = mysqli_fetch_all($result);
